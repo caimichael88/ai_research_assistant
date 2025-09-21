@@ -1,14 +1,17 @@
-"""FastAPI application for AI Research Assistant."""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from controllers import health_controller, ai_controller, asr_controller
+# Import controllers with proper module path handling
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from controllers import ai_controller, health_controller, asr_controller, tts_controller
 
 app = FastAPI(
     title="AI Research Assistant API",
-    description="Python API for AI components of the research assistant",
-    version="0.1.0",
+    description="A voice agent to provide ",
+    version="1.0.0"
 )
 
 app.add_middleware(
@@ -16,15 +19,15 @@ app.add_middleware(
     allow_origins=["http://localhost:3000", "http://localhost:4200"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
-app.include_router(health_controller.router)
 app.include_router(ai_controller.router)
 app.include_router(asr_controller.router)
-
+app.include_router(health_controller.router)
+app.include_router(tts_controller.router)
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
-    return {"message": "AI Research Assistant Python API", "version": "0.1.0"}
+    """root end point"""
+    return {"message": "AI Research Voice Agent application", "version": "1.0.0"}
