@@ -1,1 +1,1 @@
-"""Ports modules."""
+"""Adapters package: concrete implementations of ports in app.components.ports."""

@@ -86,6 +86,15 @@ class ASRService:
         except Exception as e:
             raise Exception(f"Transcription failed: {str(e)}")
 
+    def preload_default_model(self) -> None:
+        """Preload the default model at startup for faster first request."""
+        try:
+            print(f"Preloading Whisper model: {self.default_model}")
+            self._get_model(self.default_model)
+            print(f"✅ Whisper model '{self.default_model}' preloaded successfully")
+        except Exception as e:
+            print(f"⚠️ Failed to preload Whisper model: {e}")
+
     def get_model_info(self) -> Dict[str, Any]:
         """Get information about available models."""
         return {
