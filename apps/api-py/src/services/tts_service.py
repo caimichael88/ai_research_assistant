@@ -191,19 +191,28 @@ def _build_coqui_tts_engine() -> TTSEngine:
 def _build_tts_engine() -> TTSEngine:
     """Build TTS engine based on configuration"""
 
+    # Debug environment variables
+    fake_tts = os.getenv("FAKE_TTS", "1")  # Default to fake if not set
+    engine_type = os.getenv("TTS_ENGINE", "fake")  # Default to fake if not set
+
+    logger.info(f"TTS Engine Configuration - FAKE_TTS: {fake_tts}, TTS_ENGINE: {engine_type}")
+    print(f"TTS Engine Configuration - FAKE_TTS: {fake_tts}, TTS_ENGINE: {engine_type}")
+
     # Check for fake mode
-    if os.getenv("FAKE_TTS") == "1":
+    if fake_tts == "1":
         logger.info("Using fake TTS engine (FAKE_TTS=1)")
+        print("Using fake TTS engine (FAKE_TTS=1)")
         return FakeTTSEngine()
 
     # Check for Coqui TTS mode
-    engine_type = os.getenv("TTS_ENGINE", "coqui")
     if engine_type == "coqui":
         logger.info("Using Coqui TTS engine")
+        print("Using Coqui TTS engine")
         return _build_coqui_tts_engine()
 
     # Fallback to neural engine (FastSpeech2 + HiFiGAN)
     logger.info("Using neural TTS engine (FastSpeech2 + HiFiGAN)")
+    print("Using neural TTS engine (FastSpeech2 + HiFiGAN)")
     return _build_neural_tts_engine()
 
 def get_tts_service() -> TTSEngine:
